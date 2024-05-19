@@ -2024,7 +2024,9 @@ class PlayState extends MusicBeatState
 				spr.centerOffsets();
 
 			if(spr.animation.curAnim.name == 'confirm' && spr.animation.curAnim.finished) {
+				spr.centerOffsets();
 				spr.animation.play('static',false);
+				spr.centerOffsets();
 			}
 		});
 
