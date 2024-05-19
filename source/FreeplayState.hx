@@ -27,6 +27,8 @@ class FreeplayState extends MusicBeatState
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
+	var curSong:String;
+
 
 	override function create()
 	{
@@ -164,7 +166,7 @@ class FreeplayState extends MusicBeatState
 		if (Math.abs(lerpScore - intendedScore) <= 10)
 			lerpScore = intendedScore;
 
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
+		scoreText.text = "PERSONAL BEST:" + lerpScore + "\n Song Name: "+ curSong ;
 
 		var upP = controls.UP_P;
 		var downP = controls.DOWN_P;
@@ -192,7 +194,7 @@ class FreeplayState extends MusicBeatState
 		if (accepted)
 		{
 			var poop:String = Highscore.formatSong(songs[curSelected].toLowerCase(), curDifficulty);
-
+          
 			trace(poop);
 
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].toLowerCase());
@@ -230,10 +232,7 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		NGio.logEvent('Fresh');
-		#end
-
+	
 		// NGio.logEvent('Fresh');
 		FlxG.sound.play('assets/sounds/scrollMenu' + TitleState.soundExt, 0.4);
 
@@ -252,7 +251,7 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		FlxG.sound.playMusic('assets/music/' + songs[curSelected] + "_Inst" + TitleState.soundExt, 0);
-
+		curSong = songs[curSelected];
 		var bullShit:Int = 0;
 
 		for (item in grpSongs.members)
@@ -261,12 +260,12 @@ class FreeplayState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
+			 item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
+				 item.setGraphicSize(Std.int(item.width));
 			}
 		}
 	}

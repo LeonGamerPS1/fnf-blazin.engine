@@ -23,7 +23,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -70,6 +70,8 @@ class PlayState extends MusicBeatState
 
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
+
+	private var cpuStrums:FlxTypedGroup<FlxSprite>;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -635,6 +637,7 @@ class PlayState extends MusicBeatState
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
 
+		cpuStrums = new FlxTypedGroup<FlxSprite>();
 		// startCountdown();
 
 		generateSong(SONG.song);
@@ -1200,6 +1203,10 @@ class PlayState extends MusicBeatState
 
 			babyArrow.ID = i;
 
+			if (player == 0)
+			{
+				cpuStrums.add(babyArrow);
+			}
 			if (player == 1)
 			{
 				playerStrums.add(babyArrow);
@@ -1537,6 +1544,13 @@ class PlayState extends MusicBeatState
 
 				if (!daNote.mustPress && daNote.wasGoodHit)
 				{
+					cpuStrums.forEach(function(spr:FlxSprite)
+						{
+							if (Math.abs(daNote.noteData) == spr.ID)
+							{
+								spr.animation.play('confirm', true);
+							}
+						});
 					if (SONG.song != 'Tutorial')
 						camZooming = true;
 
@@ -1548,7 +1562,6 @@ class PlayState extends MusicBeatState
 							altAnim = '-alt';
 					}
 
-					trace("DA ALT THO?: " + SONG.notes[Math.floor(curStep / 16)].altAnim);
 
 					switch (Math.abs(daNote.noteData))
 					{
@@ -1566,7 +1579,7 @@ class PlayState extends MusicBeatState
 
 					if (SONG.needsVoices)
 						vocals.volume = 1;
-
+				
 					daNote.kill();
 					notes.remove(daNote, true);
 					daNote.destroy();
@@ -1587,7 +1600,7 @@ class PlayState extends MusicBeatState
 
 					daNote.active = false;
 					daNote.visible = false;
-
+					
 					daNote.kill();
 					notes.remove(daNote, true);
 					daNote.destroy();
@@ -1633,7 +1646,6 @@ class PlayState extends MusicBeatState
 
 				if (SONG.validScore)
 				{
-					NGio.unlockMedal(60961);
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 
@@ -1997,6 +2009,24 @@ class PlayState extends MusicBeatState
 				boyfriend.playAnim('idle');
 			}
 		}
+
+		cpuStrums.forEach(function(spr:FlxSprite)
+		{
+			
+
+			if (spr.animation.curAnim.name == 'confirm' && !curStage.startsWith('school'))
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+
+			if(spr.animation.curAnim.name == 'confirm' && spr.animation.curAnim.finished) {
+				spr.animation.play('static',false);
+			}
+		});
 
 		playerStrums.forEach(function(spr:FlxSprite)
 		{
