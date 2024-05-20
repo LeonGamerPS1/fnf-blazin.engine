@@ -114,6 +114,7 @@ class PlayState extends MusicBeatState
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
+	var beWatermark:FlxText;
 
 	public static var campaignScore:Int = 0;
 
@@ -681,6 +682,11 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 
+		beWatermark = new FlxText(0, healthBarBG.y + 30, 0, "BE", 20);
+		beWatermark.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, RIGHT, OUTLINE, FlxColor.BLACK, true);
+		beWatermark.scrollFactor.set();
+		add(beWatermark);
+
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -697,9 +703,10 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		beWatermark.cameras = [camHUD];
 
-		// if (SONG.song == 'South')
-		// FlxG.camera.alpha = 0.7;
+		if (SONG.song == 'South')
+			FlxG.camera.alpha = 0.7;
 		// UI_camera.zoom = 1;
 
 		// cameras = [FlxG.cameras.list[1]];
@@ -1271,6 +1278,7 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		scoreTxt.text = "Score:" + songScore;
+		beWatermark.text = SONG.song + " - " + storyDifficulty + " | BE ";
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
