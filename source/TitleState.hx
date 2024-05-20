@@ -1,6 +1,5 @@
 package;
 
-import flixel.math.FlxMath;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -42,7 +41,6 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
-	
 
 	override public function create():Void
 	{
@@ -59,7 +57,6 @@ class TitleState extends MusicBeatState
 		// DEBUG BULLSHIT
 
 		super.create();
-
 
 
 	
@@ -87,7 +84,10 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		FlxG.switchState(new ChartingState());
 		#else
-		startIntro();
+		new FlxTimer().start(1, function(tmr:FlxTimer)
+		{
+			startIntro();
+		});
 		#end
 	}
 
@@ -104,9 +104,9 @@ class TitleState extends MusicBeatState
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.GRAY, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
+			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
 				new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.GRAY, 0.7, new FlxPoint(0, 1),
+			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
 				{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
 
 			transIn = FlxTransitionableState.defaultTransIn;
@@ -129,9 +129,9 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		 bg.antialiasing = true;
-		 bg.setGraphicSize(Std.int(bg.width * 0.6));
-		 bg.updateHitbox();
+		// bg.antialiasing = true;
+		// bg.setGraphicSize(Std.int(bg.width * 0.6));
+		// bg.updateHitbox();
 		add(bg);
 
 		logoBl = new FlxSprite(-150, -100);
@@ -222,9 +222,10 @@ class TitleState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		Conductor.songPosition = FlxG.sound.music.time;
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
-		FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, 0.95);
+
 		if (FlxG.keys.justPressed.F)
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
@@ -247,7 +248,13 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			
+			#if !switch
+		
+
+			// If it's Friday according to da clock
+			if (Date.now().getDay() == 5)
+		        trace(Date.now());
+			#end
 
 			titleText.animation.play('press');
 
@@ -259,9 +266,10 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-			
+				// Check if version is outdated
 
-				
+				var version:String = "v" + Application.current.meta.get('version');
+
 					FlxG.switchState(new MainMenuState());
 				
 			});
@@ -309,8 +317,7 @@ class TitleState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
-		FlxTween.tween(FlxG.camera, {zoom: 1.05}, 0.2, {ease: FlxEase.elasticInOut});
-		
+
 		logoBl.animation.play('bump');
 		danceLeft = !danceLeft;
 

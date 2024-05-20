@@ -16,7 +16,7 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 
 
-	
+		
 
 
 		if (songScores.exists(daSong))
@@ -32,7 +32,6 @@ class Highscore
 	{
 
 		
-
 
 		var daWeek:String = formatSong('week' + week, diff);
 
