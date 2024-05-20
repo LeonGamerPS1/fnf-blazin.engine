@@ -1278,7 +1278,7 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		scoreTxt.text = "Score:" + songScore;
-		beWatermark.text = SONG.song + " - " + storyDifficulty + " | BE ";
+		beWatermark.text = SONG.song + " - " + checkDiff(storyDifficulty) + " | BE ";
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -1616,6 +1616,21 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.ONE)
 			endSong();
 		#end
+	}
+
+	function checkDiff(i:Int) {
+		var diffText:String;
+		diffText = new String('waiting for input...');
+		switch (i)
+		{
+			case 0:
+				diffText = "EASY";
+			case 1:
+				diffText = 'NORMAL';
+			case 2:
+				diffText = "HARD";
+		}
+		return diffText;
 	}
 
 	function endSong():Void
@@ -2111,14 +2126,7 @@ class PlayState extends MusicBeatState
 		var downP = controls.DOWN_P;
 		var leftP = controls.LEFT_P;
 
-		if (leftP)
-			noteMiss(0);
-		if (downP)
-			noteMiss(1);
-		if (upP)
-			noteMiss(2);
-		if (rightP)
-			noteMiss(3);
+		
 	}
 
 	function noteCheck(keyP:Bool, note:Note):Void

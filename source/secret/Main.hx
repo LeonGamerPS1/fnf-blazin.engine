@@ -1,4 +1,4 @@
-package;
+package secret;
 
 import flixel.FlxGame;
 import openfl.display.FPS;
