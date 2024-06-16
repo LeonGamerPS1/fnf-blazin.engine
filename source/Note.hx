@@ -18,6 +18,7 @@ class Note extends FlxSprite
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
+	public var maybot:Bool = false;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
@@ -72,6 +73,7 @@ class Note extends FlxSprite
 					animation.add('greenhold', [2]);
 					animation.add('redhold', [3]);
 					animation.add('bluehold', [1]);
+					scale.x = 0.7;
 				}
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
@@ -121,7 +123,6 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			noteScore * 0.2;
-			alpha = 0.6;
 
 			x += width / 2;
 
@@ -182,6 +183,8 @@ class Note extends FlxSprite
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset)
 				tooLate = true;
+			if (strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.3))
+				maybot = true;
 		}
 		else
 		{

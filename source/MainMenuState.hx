@@ -123,10 +123,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.BACK)
-			{
-				FlxG.switchState(new TitleState());
-			}
 
 			if (controls.ACCEPT)
 			{

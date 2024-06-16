@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Blazin' Engine" file="BE" packageName="com.blazin.funkin" main="secret.Main" version="release 1" company="xb02" />
+	<app title="Friday Night Funkin' Blazin' Engine" file="BE" packageName="com.blazin.funkin" main="Main" version="release 1" company="xb02" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -75,6 +75,7 @@
 	<haxelib name="newgrounds"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
+	<haxelib name="linc_luajit"/>
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->

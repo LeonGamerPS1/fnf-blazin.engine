@@ -4,11 +4,14 @@ import flixel.FlxSprite;
 
 class HealthIcon extends FlxSprite
 {
+	public var offsety:Int = 150;
+	public var offsetx:Int = 150;
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
 		loadGraphic('assets/images/iconGrid.png', true, 150, 150);
-
+        offset.x = offsetx;
+		offset.y = offsety;
 		antialiasing = true;
 		animation.add('bf', [0, 1], 0, false, isPlayer);
 		animation.add('bf-car', [0, 1], 0, false, isPlayer);
@@ -31,5 +34,7 @@ class HealthIcon extends FlxSprite
 		animation.add('monster-christmas', [19, 20], 0, false, isPlayer);
 		animation.play(char);
 		scrollFactor.set();
+	
 	}
+	
 }

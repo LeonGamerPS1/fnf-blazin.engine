@@ -1,4 +1,4 @@
-package secret;
+package;
 
 import flixel.FlxGame;
 import openfl.display.FPS;
@@ -12,7 +12,8 @@ class Main extends Sprite
 		addChild(new FlxGame(0, 0, TitleState));
 
 		#if !mobile
-		addChild(new FPS(10, 3, 0xFFFFFF));
+		var fps_mem:FPS_Mem = new FPS_Mem(10, 10, 0xffffff);
+		addChild(fps_mem);
 		#end
 	}
 }
